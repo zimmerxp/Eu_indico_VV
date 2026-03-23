@@ -281,7 +281,25 @@
     }
     .vote-btn.up:hover, .vote-btn.up.active { background: var(--green-pale); border-color: var(--green); color: var(--green); }
     .vote-btn.down:hover, .vote-btn.down.active { background: var(--red-pale); border-color: var(--red); color: var(--red); }
+    .vote-btn.used:hover, .vote-btn.used.active { background: #fff4e0; border-color: var(--gold); color: #8a6010; }
     .vote-btn .emoji { font-size: 1em; }
+
+    /* ── FILTRO MORADORES ── */
+    .filter-toggle {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 16px;
+      border-radius: 30px;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem; font-weight: 500;
+      cursor: pointer; transition: all 0.18s;
+      white-space: nowrap; margin-left: 8px;
+    }
+    .filter-toggle:hover { border-color: #2a5bad; color: #2a5bad; background: #e8f0fb; }
+    .filter-toggle.active { background: #2a5bad; border-color: #2a5bad; color: white; }
+    .filter-divider { width: 1px; background: var(--border); margin: 4px 4px; align-self: stretch; flex-shrink: 0; }
 
     .wa-btn {
       display: flex; align-items: center; gap: 6px;
@@ -342,6 +360,145 @@
     .avatar-saude        { background: #e0f5ec; }
     .avatar-profissional { background: #e8e0f5; }
     .avatar-transporte   { background: #e0f0f5; }
+
+    /* ── FAB (botão flutuante) ── */
+    .fab {
+      position: fixed;
+      bottom: 28px;
+      right: 24px;
+      z-index: 200;
+      background: var(--green);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 14px 22px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 6px 24px rgba(45,90,39,0.35);
+      display: flex; align-items: center; gap: 8px;
+      transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+    }
+    .fab:hover { background: var(--green-light); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(45,90,39,0.4); }
+    .fab-icon { font-size: 1.1rem; }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(26,23,16,0.55);
+      z-index: 300;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      backdrop-filter: blur(3px);
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--white);
+      border-radius: 18px;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      animation: modalIn 0.25s ease;
+      overflow: hidden;
+    }
+    @keyframes modalIn {
+      from { opacity:0; transform: scale(0.94) translateY(16px); }
+      to   { opacity:1; transform: scale(1) translateY(0); }
+    }
+    .modal-header {
+      background: var(--green);
+      padding: 22px 24px 18px;
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+    }
+    .modal-header-text h3 {
+      font-family: 'Playfair Display', serif;
+      color: white;
+      font-size: 1.15rem;
+      margin-bottom: 4px;
+    }
+    .modal-header-text p { color: rgba(255,255,255,0.75); font-size: 0.82rem; }
+    .modal-close {
+      background: rgba(255,255,255,0.15);
+      border: none; border-radius: 8px;
+      color: white; font-size: 1.1rem;
+      width: 32px; height: 32px;
+      cursor: pointer; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+    }
+    .modal-close:hover { background: rgba(255,255,255,0.28); }
+
+    .modal-body { padding: 24px; display: flex; flex-direction: column; gap: 14px; }
+
+    .form-group { display: flex; flex-direction: column; gap: 5px; }
+    .form-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .form-input, .form-select, .form-textarea {
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text);
+      background: var(--cream);
+      outline: none;
+      transition: border-color 0.18s;
+      width: 100%;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--green); background: white; }
+    .form-textarea { resize: vertical; min-height: 80px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .modal-footer { padding: 0 24px 24px; display: flex; gap: 10px; }
+    .btn-cancel {
+      flex: 1; padding: 11px;
+      border-radius: 8px; border: 1.5px solid var(--border);
+      background: transparent; color: var(--text-muted);
+      font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 500;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .btn-cancel:hover { border-color: var(--text-muted); color: var(--text); }
+    .btn-send {
+      flex: 2; padding: 11px;
+      border-radius: 8px; border: none;
+      background: #25d366; color: white;
+      font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn-send:hover { background: #1ebe5a; transform: scale(1.02); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      color: rgba(245,240,232,0.5);
+      text-align: center;
+      padding: 22px 24px 28px;
+      font-size: 0.78rem;
+      line-height: 1.8;
+    }
+    footer a { color: var(--gold-light); text-decoration: none; font-weight: 500; }
+    footer a:hover { text-decoration: underline; }
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--cream);
+      margin-bottom: 6px;
+    }
+    .footer-divider {
+      width: 40px; height: 1px;
+      background: rgba(255,255,255,0.12);
+      margin: 12px auto;
+    }
   </style>
 </head>
 <body>
@@ -390,6 +547,8 @@
     <button class="filter-btn" onclick="filterCat('Serviços Profissionais', this)"><span class="cat-emoji">💼</span> Profissionais</button>
     <button class="filter-btn" onclick="filterCat('Transporte e Logística', this)"><span class="cat-emoji">🚗</span> Transporte</button>
     <button class="filter-btn" onclick="filterCat('Outros Serviços', this)"><span class="cat-emoji">🎪</span> Outros</button>
+    <div class="filter-divider"></div>
+    <button class="filter-toggle" id="moradorToggle" onclick="toggleMorador(this)">👋 Só Moradores</button>
   </div>
 </div>
 
@@ -405,7 +564,82 @@
 
 </div>
 
-<script>
+<!-- FAB -->
+<button class="fab" onclick="openModal()">
+  <span class="fab-icon">➕</span> Indicar Serviço
+</button>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="overlayClick(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-header-text">
+        <h3>📋 Indicar novo serviço</h3>
+        <p>Preencha e enviaremos a sugestão via WhatsApp</p>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Nome do prestador / empresa *</label>
+        <input class="form-input" id="f_nome" type="text" placeholder="Ex: João Pintor">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Categoria *</label>
+          <select class="form-select" id="f_cat">
+            <option value="">Selecione…</option>
+            <option>Alimentação</option>
+            <option>Beleza e Bem-estar</option>
+            <option>Manutenção e Reformas</option>
+            <option>Saúde e Farmácia</option>
+            <option>Serviços Profissionais</option>
+            <option>Transporte e Logística</option>
+            <option>Outros Serviços</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Telefone / WhatsApp *</label>
+          <input class="form-input" id="f_tel" type="tel" placeholder="(31) 9 9999-9999">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Descrição do serviço</label>
+        <textarea class="form-textarea" id="f_desc" placeholder="Conte brevemente o que esse prestador faz e por que você recomenda…"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">É morador?</label>
+          <select class="form-select" id="f_morador">
+            <option value="Não">Não — Externo</option>
+            <option value="Sim">Sim — Morador</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Seu nome (opcional)</label>
+          <input class="form-input" id="f_quem" type="text" placeholder="Quem indica?">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-send" onclick="enviarIndicacao()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Enviar via WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">🏡 Villa Veneto Residencial</div>
+  <div>Catálogo comunitário de serviços — mantido pelos moradores</div>
+  <div class="footer-divider"></div>
+  <div>Desenvolvido por <a href="https://ztech.website/" target="_blank" rel="noopener">ztech.website</a></div>
+</footer>
+
+<script type="module">
 // ─── DATA ──────────────────────────────────────────────────────────────────
 const services = [
   // Alimentação
@@ -470,9 +704,9 @@ const services = [
   { id:49, cat:'Serviços Profissionais', name:'Contabilidade — Claudia Silva', desc:'Serviços contábeis, declaração de IR e consultoria fiscal.', phones:['+553187241861'], morador:false, emoji:'📊' },
   { id:50, cat:'Serviços Profissionais', name:'Daisymar — DGCO Compras', desc:'Assessoria em compras, cotações e procurement.', phones:['+553199952973'], morador:true, emoji:'🛒' },
   { id:51, cat:'Serviços Profissionais', name:'Despachante Valdemar', desc:'Despachante para documentação de veículos e DETRAN.', phones:['+553199881538'], morador:false, emoji:'📋' },
-  //{ id:52, cat:'Serviços Profissionais', name:'Márcio — Sub Síndico CITA', desc:'Sub síndico do condomínio. Contato para assuntos internos.', phones:['+553188105781'], morador:true, emoji:'🏢' },
+  { id:52, cat:'Serviços Profissionais', name:'Márcio — Sub Síndico CITA', desc:'Sub síndico do condomínio. Contato para assuntos internos.', phones:['+553188105781'], morador:true, emoji:'🏢' },
   { id:53, cat:'Serviços Profissionais', name:'Renata Gomes — Advogada', desc:'Consultoria jurídica: direito civil, trabalhista e imobiliário.', phones:['+5531999953364'], morador:false, emoji:'⚖️' },
-  //{ id:54, cat:'Serviços Profissionais', name:'Síndico Profissional', desc:'Gestão condominial profissional. Administração e zeladoria.', phones:['+553171512837'], morador:false, emoji:'🏢' },
+  { id:54, cat:'Serviços Profissionais', name:'Síndico Profissional', desc:'Gestão condominial profissional. Administração e zeladoria.', phones:['+553171512837'], morador:false, emoji:'🏢' },
 
   // Transporte
   { id:55, cat:'Transporte e Logística', name:'Andreia — Van Escolar', desc:'Van escolar para transporte de crianças até a escola.', phones:['+553185782731'], morador:false, emoji:'🚌' },
@@ -484,16 +718,45 @@ const services = [
   { id:61, cat:'Transporte e Logística', name:'Sr. Nico Carreto', desc:'Serviço de carreto confiável para mudanças e fretes.', phones:['+553197259354'], morador:false, emoji:'🚛' },
 ];
 
+// ─── FIREBASE ──────────────────────────────────────────────────────────────
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, runTransaction, onValue, get }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDPOUMFRze0mHVte1FxhvGQpvlT8IMQxbk",
+  authDomain: "veneto-indica.firebaseapp.com",
+  projectId: "veneto-indica",
+  storageBucket: "veneto-indica.firebasestorage.app",
+  messagingSenderId: "771993408592",
+  appId: "1:771993408592:web:dea53da3f520e149bf2d55",
+  databaseURL: "https://veneto-indica-default-rtdb.firebaseio.com"
+};
+
+const fbApp = initializeApp(firebaseConfig);
+const db    = getDatabase(fbApp);
+
 // ─── STATE ─────────────────────────────────────────────────────────────────
 let currentCat = 'all';
 let searchQuery = '';
-const votes = JSON.parse(localStorage.getItem('vv_votes') || '{}');
+let somenteMoradores = false;
+
+// contadores globais vindos do Firebase  { "1": {up:3, down:1, used:2}, ... }
+let fbCounts = {};
+
+// votos pessoais do usuário (localStorage — só para saber o que ELE votou)
+const myVotes = JSON.parse(localStorage.getItem('vv_my_votes') || '{}');
+function saveMyVotes() { localStorage.setItem('vv_my_votes', JSON.stringify(myVotes)); }
+
+// ─── ESCUTA FIREBASE EM TEMPO REAL ─────────────────────────────────────────
+const countsRef = ref(db, 'counts');
+onValue(countsRef, snap => {
+  fbCounts = snap.val() || {};
+  renderCards();
+});
 
 // ─── HELPERS ───────────────────────────────────────────────────────────────
-function saveVotes() { localStorage.setItem('vv_votes', JSON.stringify(votes)); }
-
 function formatPhone(phone) {
-  // Remove +55 prefix and format
   let p = phone.replace(/^\+55/, '').replace(/\D/g,'');
   if (p.length === 11) return `(${p.slice(0,2)}) ${p.slice(2,7)}-${p.slice(7)}`;
   if (p.length === 10) return `(${p.slice(0,2)}) ${p.slice(2,6)}-${p.slice(6)}`;
@@ -518,6 +781,10 @@ function catClass(cat) {
   return map[cat] || 'outros';
 }
 
+function getCount(id, field) {
+  return (fbCounts[id] && fbCounts[id][field]) ? fbCounts[id][field] : 0;
+}
+
 // ─── RENDER ────────────────────────────────────────────────────────────────
 function renderCards() {
   const grid = document.getElementById('cardsGrid');
@@ -527,7 +794,8 @@ function renderCards() {
     const matchCat = currentCat === 'all' || s.cat === currentCat;
     const q = searchQuery.toLowerCase();
     const matchQ = !q || s.name.toLowerCase().includes(q) || s.cat.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q);
-    return matchCat && matchQ;
+    const matchMorador = !somenteMoradores || s.morador === true;
+    return matchCat && matchQ && matchMorador;
   });
 
   document.getElementById('totalCount').textContent = services.length;
@@ -539,12 +807,11 @@ function renderCards() {
   }
 
   grid.innerHTML = filtered.map((s, i) => {
-    const voteKey = `v_${s.id}`;
-    const upKey = `u_${s.id}`;
-    const downKey = `d_${s.id}`;
-    const myVote = votes[voteKey] || null;
-    const upCount = votes[upKey] || 0;
-    const downCount = votes[downKey] || 0;
+    const myVote  = myVotes[`v_${s.id}`] || null;
+    const myUsed  = myVotes[`used_${s.id}`] || false;
+    const upCount   = getCount(s.id, 'up');
+    const downCount = getCount(s.id, 'down');
+    const usedCount = getCount(s.id, 'used');
 
     const phone = s.phones[0];
     const phoneDisplay = s.phones.map(formatPhone).join(' / ');
@@ -566,18 +833,21 @@ function renderCards() {
           <br><small style="color:#aaa9a0;margin-top:4px;display:block">📞 ${phoneDisplay}</small>
         </div>
         <div class="card-divider"></div>
+        <div style="padding:10px 16px 0;display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="vote-btn up ${myVote==='up'?'active':''}" onclick="vote(${s.id},'up')">
+            <span class="emoji">👍</span> <span id="up-${s.id}">${upCount}</span>
+          </button>
+          <button class="vote-btn down ${myVote==='down'?'active':''}" onclick="vote(${s.id},'down')">
+            <span class="emoji">👎</span> <span id="down-${s.id}">${downCount}</span>
+          </button>
+          <button class="vote-btn used ${myUsed?'active':''}" onclick="toggleUsed(${s.id})" title="Marcar que você já usou este serviço">
+            <span class="emoji">✅</span> Já usei <span id="used-${s.id}">${usedCount > 0 ? usedCount : ''}</span>
+          </button>
+        </div>
         <div class="card-footer">
-          <div class="rating-row">
-            <button class="vote-btn up ${myVote==='up'?'active':''}" onclick="vote(${s.id},'up',this)">
-              <span class="emoji">👍</span> <span id="up-${s.id}">${upCount}</span>
-            </button>
-            <button class="vote-btn down ${myVote==='down'?'active':''}" onclick="vote(${s.id},'down',this)">
-              <span class="emoji">👎</span> <span id="down-${s.id}">${downCount}</span>
-            </button>
-          </div>
-          <a class="wa-btn" href="${waLink(phone)}" target="_blank" rel="noopener">
+          <a class="wa-btn" href="${waLink(phone)}" target="_blank" rel="noopener" style="width:100%;justify-content:center;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            Chamar
+            Chamar no WhatsApp
           </a>
         </div>
       </div>
@@ -585,27 +855,50 @@ function renderCards() {
   }).join('');
 }
 
-// ─── VOTE ──────────────────────────────────────────────────────────────────
-function vote(id, direction, btn) {
-  const voteKey = `v_${id}`;
-  const upKey   = `u_${id}`;
-  const downKey = `d_${id}`;
-  const prev = votes[voteKey];
+// ─── VOTE (Firebase) ───────────────────────────────────────────────────────
+function vote(id, direction) {
+  const prev = myVotes[`v_${id}`] || null;
+  const svcRef = ref(db, `counts/${id}`);
 
-  if (prev === direction) {
-    // toggle off
-    votes[voteKey] = null;
-    votes[direction === 'up' ? upKey : downKey] = Math.max(0, (votes[direction === 'up' ? upKey : downKey] || 0) - 1);
-  } else {
-    if (prev) {
-      // remove old vote
-      const oldKey = prev === 'up' ? upKey : downKey;
-      votes[oldKey] = Math.max(0, (votes[oldKey] || 0) - 1);
+  runTransaction(svcRef, data => {
+    if (!data) data = { up: 0, down: 0, used: 0 };
+    data.up   = data.up   || 0;
+    data.down = data.down || 0;
+
+    if (prev === direction) {
+      // desfaz o voto
+      data[direction] = Math.max(0, data[direction] - 1);
+      myVotes[`v_${id}`] = null;
+    } else {
+      if (prev) data[prev] = Math.max(0, data[prev] - 1); // remove voto anterior
+      data[direction]++;
+      myVotes[`v_${id}`] = direction;
     }
-    votes[voteKey] = direction;
-    votes[direction === 'up' ? upKey : downKey] = (votes[direction === 'up' ? upKey : downKey] || 0) + 1;
-  }
-  saveVotes();
+    return data;
+  });
+  saveMyVotes();
+}
+
+// ─── JÁ USEI (Firebase) ────────────────────────────────────────────────────
+function toggleUsed(id) {
+  const wasUsed = myVotes[`used_${id}`] || false;
+  const svcRef  = ref(db, `counts/${id}`);
+
+  runTransaction(svcRef, data => {
+    if (!data) data = { up: 0, down: 0, used: 0 };
+    data.used = data.used || 0;
+    data.used = wasUsed ? Math.max(0, data.used - 1) : data.used + 1;
+    return data;
+  });
+
+  myVotes[`used_${id}`] = !wasUsed;
+  saveMyVotes();
+}
+
+// ─── FILTRO MORADORES ──────────────────────────────────────────────────────
+function toggleMorador(btn) {
+  somenteMoradores = !somenteMoradores;
+  btn.classList.toggle('active', somenteMoradores);
   renderCards();
 }
 
@@ -623,7 +916,64 @@ document.getElementById('searchInput').addEventListener('input', function() {
   renderCards();
 });
 
+// ─── MODAL ─────────────────────────────────────────────────────────────────
+function openModal() {
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function overlayClick(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+function enviarIndicacao() {
+  const nome    = document.getElementById('f_nome').value.trim();
+  const cat     = document.getElementById('f_cat').value;
+  const tel     = document.getElementById('f_tel').value.trim();
+  const desc    = document.getElementById('f_desc').value.trim();
+  const morador = document.getElementById('f_morador').value;
+  const quem    = document.getElementById('f_quem').value.trim();
+
+  if (!nome || !cat || !tel) {
+    alert('Por favor, preencha pelo menos o nome, a categoria e o telefone. 😊');
+    return;
+  }
+
+  const linhas = [
+    '📋 *INDICAÇÃO DE SERVIÇO — Villa Veneto*',
+    '',
+    `👤 *Prestador:* ${nome}`,
+    `📂 *Categoria:* ${cat}`,
+    `📞 *Telefone:* ${tel}`,
+    `🏘️ *Morador:* ${morador}`,
+    desc  ? `📝 *Descrição:* ${desc}` : '',
+    quem  ? `✅ *Indicado por:* ${quem}` : '',
+  ].filter(Boolean).join('\n');
+
+  const numero = '5531973595240';
+  const url = `https://wa.me/${numero}?text=${encodeURIComponent(linhas)}`;
+  window.open(url, '_blank');
+  closeModal();
+
+  // Limpar campos
+  ['f_nome','f_cat','f_tel','f_desc','f_quem'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f_morador').value = 'Não';
+}
+
 // ─── INIT ──────────────────────────────────────────────────────────────────
+// Expõe funções ao escopo global (necessário em type="module")
+window.vote          = vote;
+window.toggleUsed    = toggleUsed;
+window.toggleMorador = toggleMorador;
+window.filterCat     = filterCat;
+window.openModal     = openModal;
+window.closeModal    = closeModal;
+window.overlayClick  = overlayClick;
+window.enviarIndicacao = enviarIndicacao;
+
 renderCards();
 </script>
 </body>
