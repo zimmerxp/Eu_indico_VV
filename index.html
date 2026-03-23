@@ -3,7 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Catálogo de Serviços — Villa Veneto Residencial</title>
+  <title>Veneto Indica — Catálogo de Serviços do Villa Veneto</title>
+
+  <!-- Meta tags para compartilhamento no WhatsApp e redes sociais -->
+  <meta name="description" content="Catálogo comunitário de serviços do Villa Veneto Residencial. Encontre prestadores recomendados pelos próprios moradores.">
+  <meta property="og:title" content="🏡 Veneto Indica">
+  <meta property="og:description" content="Catálogo de serviços recomendados pelos moradores do Villa Veneto. Alimentação, manutenção, beleza, transporte e muito mais.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://img.freepik.com/free-vector/neighborhood-concept-illustration_114360-2851.jpg">
+  <meta property="og:locale" content="pt_BR">
+  <meta name="theme-color" content="#2d5a27">
+
+  <!-- WhatsApp específico -->
+  <meta property="og:site_name" content="Veneto Indica">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="🏡 Veneto Indica — Serviços do Villa Veneto">
+  <meta name="twitter:description" content="Encontre prestadores de confiança recomendados pelos moradores do Villa Veneto Residencial.">`
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -301,6 +316,27 @@
     .filter-toggle.active { background: #2a5bad; border-color: #2a5bad; color: white; }
     .filter-divider { width: 1px; background: var(--border); margin: 4px 4px; align-self: stretch; flex-shrink: 0; }
 
+    /* ── SORT BAR ── */
+    .sort-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px; gap: 12px; flex-wrap: wrap;
+    }
+    .sort-label { font-size: 0.8rem; color: var(--text-muted); white-space: nowrap; }
+    .sort-options { display: flex; gap: 6px; }
+    .sort-btn {
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem; font-weight: 500;
+      cursor: pointer; transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .sort-btn:hover { border-color: var(--green); color: var(--green); }
+    .sort-btn.active { background: var(--dark); border-color: var(--dark); color: white; }
+
     .wa-btn {
       display: flex; align-items: center; gap: 6px;
       padding: 8px 14px;
@@ -326,20 +362,6 @@
     }
     .empty-state .big-emoji { font-size: 3rem; margin-bottom: 12px; }
     .empty-state p { font-size: 0.95rem; }
-
-    /* ── NOTICE BANNER ── */
-    .notice {
-      background: linear-gradient(90deg, #fffbee, #fff8e1);
-      border: 1.5px solid var(--gold);
-      border-radius: var(--radius);
-      padding: 14px 18px;
-      margin-bottom: 28px;
-      font-size: 0.83rem;
-      color: #6b540f;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 640px) {
@@ -555,11 +577,17 @@
 <!-- MAIN -->
 <div class="main-wrap">
 
-  <div class="notice">
-    ℹ️ <span>Avaliações são salvas localmente no seu dispositivo. Clique no 👍 ou 👎 para opinar sobre um prestador.</span>
+  <div class="sort-bar">
+    <div class="section-title" id="sectionTitle" style="margin-bottom:0;">Todos os Serviços</div>
+    <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+      <span class="sort-label">Ordenar:</span>
+      <div class="sort-options">
+        <button class="sort-btn active" onclick="setSort('az', this)">A–Z</button>
+        <button class="sort-btn" onclick="setSort('top', this)">👍 Mais votados</button>
+        <button class="sort-btn" onclick="setSort('used', this)">✅ Mais usados</button>
+      </div>
+    </div>
   </div>
-
-  <div class="section-title" id="sectionTitle">Todos os Serviços</div>
   <div class="cards-grid" id="cardsGrid"></div>
 
 </div>
@@ -633,10 +661,11 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">🏡 Villa Veneto Residencial</div>
-  <div>Catálogo comunitário de serviços — mantido pelos moradores</div>
+  <div class="footer-logo">🏡 Veneto Indica</div>
+  <div>Catálogo comunitário de serviços — mantido pelos moradores do Villa Veneto</div>
   <div class="footer-divider"></div>
-  <div>Desenvolvido por <a href="https://ztech.website/" target="_blank" rel="noopener">ztech.website</a></div>
+  <div>Última atualização: <span id="lastUpdate">março de 2025</span> &nbsp;·&nbsp; <span id="footerCount">61</span> prestadores cadastrados</div>
+  <div style="margin-top:6px;">Desenvolvido por <a href="https://ztech.website/" target="_blank" rel="noopener">ztech.website</a></div>
 </footer>
 
 <script type="module">
@@ -740,6 +769,7 @@ const db    = getDatabase(fbApp);
 let currentCat = 'all';
 let searchQuery = '';
 let somenteMoradores = false;
+let currentSort = 'az';
 
 // contadores globais vindos do Firebase  { "1": {up:3, down:1, used:2}, ... }
 let fbCounts = {};
@@ -788,7 +818,6 @@ function getCount(id, field) {
 // ─── RENDER ────────────────────────────────────────────────────────────────
 function renderCards() {
   const grid = document.getElementById('cardsGrid');
-  const title = document.getElementById('sectionTitle');
 
   let filtered = services.filter(s => {
     const matchCat = currentCat === 'all' || s.cat === currentCat;
@@ -798,8 +827,18 @@ function renderCards() {
     return matchCat && matchQ && matchMorador;
   });
 
+  // Ordenação
+  if (currentSort === 'top') {
+    filtered.sort((a, b) => getCount(b.id, 'up') - getCount(a.id, 'up'));
+  } else if (currentSort === 'used') {
+    filtered.sort((a, b) => getCount(b.id, 'used') - getCount(a.id, 'used'));
+  } else {
+    filtered.sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
+  }
+
   document.getElementById('totalCount').textContent = services.length;
-  title.childNodes[0].textContent = currentCat === 'all' ? `Todos os Serviços (${filtered.length}) ` : `${currentCat} (${filtered.length}) `;
+  const titleEl = document.getElementById('sectionTitle');
+  if (titleEl) titleEl.childNodes[0].textContent = currentCat === 'all' ? `Todos os Serviços (${filtered.length}) ` : `${currentCat} (${filtered.length}) `;
 
   if (filtered.length === 0) {
     grid.innerHTML = `<div class="empty-state"><div class="big-emoji">🔍</div><p>Nenhum serviço encontrado para "<strong>${searchQuery || currentCat}</strong>".</p></div>`;
@@ -895,6 +934,14 @@ function toggleUsed(id) {
   saveMyVotes();
 }
 
+// ─── ORDENAÇÃO ─────────────────────────────────────────────────────────────
+function setSort(type, btn) {
+  currentSort = type;
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCards();
+}
+
 // ─── FILTRO MORADORES ──────────────────────────────────────────────────────
 function toggleMorador(btn) {
   somenteMoradores = !somenteMoradores;
@@ -964,11 +1011,19 @@ function enviarIndicacao() {
 }
 
 // ─── INIT ──────────────────────────────────────────────────────────────────
+// Data dinâmica no rodapé
+const meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+const hoje = new Date();
+const dataEl = document.getElementById('lastUpdate');
+const countEl = document.getElementById('footerCount');
+if (dataEl) dataEl.textContent = `${meses[hoje.getMonth()]} de ${hoje.getFullYear()}`;
+if (countEl) countEl.textContent = services.length;
 // Expõe funções ao escopo global (necessário em type="module")
 window.vote          = vote;
 window.toggleUsed    = toggleUsed;
 window.toggleMorador = toggleMorador;
 window.filterCat     = filterCat;
+window.setSort       = setSort;
 window.openModal     = openModal;
 window.closeModal    = closeModal;
 window.overlayClick  = overlayClick;
